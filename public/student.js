@@ -63,7 +63,6 @@ window.onload = function () {
           answerKey.push(question.optionId);
         }
       }
-      console.log(answerKey);
     }
   };
 };

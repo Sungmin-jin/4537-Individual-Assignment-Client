@@ -12,7 +12,6 @@ window.onload = function () {
   xhttp.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
       const quizzes = JSON.parse(this.responseText);
-      console.log(quizzes);
       if (quizzes.length === 0) {
         adminSection.innerHTML += '<h3>No quizzes<h3>';
       }
@@ -43,7 +42,6 @@ btnCreate.addEventListener('click', () => {
   if (input.value === '') {
     alert('Invalid Quiz Name');
   } else {
-    console.log(input.value);
     const xhttp = new XMLHttpRequest();
     xhttp.open(
       'POST',
@@ -55,7 +53,6 @@ btnCreate.addEventListener('click', () => {
     xhttp.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         const data = JSON.parse(this.responseText);
-        console.log(data);
         location.href = `./admin.html?id=${data.insertId}&quizName=${input.value}`;
       }
     };

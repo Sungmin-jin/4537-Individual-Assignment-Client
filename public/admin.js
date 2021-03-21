@@ -154,8 +154,9 @@ btnSave.addEventListener('click', (e) => {
 
   const xhttp = new XMLHttpRequest();
   let msg = '';
-  let counter = 1;
+  let counter = 0;
   for (let card of cards) {
+    counter++;
     const formData = {
       questionId: parseInt(card.id),
       options: [],
@@ -168,9 +169,9 @@ btnSave.addEventListener('click', (e) => {
       if (options[i].value == '' && !card.className.includes('edited')) {
         continue;
       }
-      if (options[i].value == '') {
-        continue;
-      }
+      // if (options[i].value == '') {
+      //   continue;
+      // }
 
       if (checkers[i].checked) {
         formData.options.push({
@@ -193,7 +194,7 @@ btnSave.addEventListener('click', (e) => {
 
     formData.quizId = urlParams.get('id');
     if (!isValidQuestion(formData) && !card.className.includes('not-edit')) {
-      msg += `Question ${counter++} is not invalid\n`;
+      msg += `Question ${counter} is not invalid\n`;
     } else if (card.className.includes('edited')) {
       xhttp.open(
         'PUT',
@@ -230,15 +231,28 @@ btnSave.addEventListener('click', (e) => {
 });
 
 function isValidQuestion(question) {
+  console.log(question);
+  let isThereAnswer = false;
+  let counter = 0;
   if (question.content == '') {
     return false;
   }
+  if (question.options.length < 2) {
+    return false;
+  }
   for (let option of question.options) {
+    if (option.detail != '') {
+      counter++;
+    }
     if (option.isAnswer && option.detail !== '') {
-      return true;
+      isThereAnswer = true;
+      // return true;
     }
   }
-  return false;
+  if (counter < 2) {
+    return false;
+  }
+  return isThereAnswer;
 }
 
 document.getElementById('back').addEventListener('click', () => {
